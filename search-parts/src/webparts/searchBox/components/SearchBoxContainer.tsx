@@ -213,7 +213,6 @@ export default class SearchBoxContainer extends React.Component<ISearchBoxContai
                     componentRef={searchBoxRef}
                     placeholder={this.props.placeholderText ? this.props.placeholderText : webPartStrings.SearchBox.DefaultPlaceholder}
                     ariaLabel={`${scopeLabel ? `${scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
-                    clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                     className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                     clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                     styles={{
@@ -222,11 +221,6 @@ export default class SearchBoxContainer extends React.Component<ISearchBoxContai
                     }}
                     value={this.state.searchInputValue}
                     autoComplete="off"
-                    style={{ ...dynamicPlaceholderStyle, ...dynamicIconStyle }}
-                    
-                    value={this.state.searchInputValue}
-                    autoComplete="off"
-                    
                     style={{ ...dynamicPlaceholderStyle, ...dynamicIconStyle }}
                     onChange={(event) => {
                         const newInputValue = event && event.currentTarget ? event.currentTarget.value : "";
