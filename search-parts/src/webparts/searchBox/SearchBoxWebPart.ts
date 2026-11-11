@@ -387,7 +387,7 @@ export default class SearchBoxWebPart extends BaseWebPart<ISearchBoxWebPartProps
                         groupName: webPartStrings.PropertyPane.SearchBoxStylingGroup.GroupName,
                         isCollapsed: true,
                         groupFields: this._getSearchBoxStylingFields()
-                    },
+                    }] : []),
                     this.getTitleStylingPropertyPaneGroup(),
                     {
                         groupName: commonStrings.AdvancedSearch.Toggle,
