@@ -631,18 +631,12 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
                             ariaLabel={`${this.props.scopeLabel ? `${this.props.scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
                             clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                             className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
-                            clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                             styles={{
                                 ...searchBoxFluentStyles,
                                 root: { ...dynamicSearchBoxTextStyle, ...searchBoxFluentStyles.root }
                             }}
                             value={this.state.searchInputValue}
                             autoComplete="off"
-                            style={{ ...dynamicPlaceholderStyle, ...dynamicIconStyle }}
-                            
-                            value={this.state.searchInputValue}
-                            autoComplete="off"
-                            
                             style={{ ...dynamicPlaceholderStyle, ...dynamicIconStyle }}
                             //data-is-focusable={this.state.proposedQuerySuggestions.length > 0}
                             onChange={(event) => {
