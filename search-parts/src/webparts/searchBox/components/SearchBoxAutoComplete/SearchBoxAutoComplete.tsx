@@ -631,10 +631,7 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
                             ariaLabel={`${this.props.scopeLabel ? `${this.props.scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
                             clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                             className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
-                            styles={{
-                                ...searchBoxFluentStyles,
-                                root: { ...dynamicSearchBoxTextStyle, ...searchBoxFluentStyles.root }
-                            }}
+                            styles={concatStyleSets(searchBoxFluentStyles, { root: dynamicSearchBoxTextStyle })}
                             value={this.state.searchInputValue}
                             autoComplete="off"
                             style={{ ...dynamicPlaceholderStyle, ...dynamicIconStyle }}
