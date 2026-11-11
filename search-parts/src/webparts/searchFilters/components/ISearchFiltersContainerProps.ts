@@ -97,11 +97,21 @@ export interface ISearchFiltersContainerProps {
    * Filter panel border color
    */
   filterBorderColor?: string;
+  
+  /**
+   * Filter panel text color
+   */
+  filterTextColor?: string;
 
   /**
    * Filter panel border thickness in pixels
    */
   filterBorderThickness?: number;
+
+  /**
+   * Filter panel border radius in pixels
+   */
+  filterBorderRadius?: number;
 
   /**
    * Title font family
@@ -117,4 +127,9 @@ export interface ISearchFiltersContainerProps {
    * Title font color
    */
   titleFontColor?: string;
+  
+  /**
+   * Show the web part title
+   */
+  showTitle?: boolean;
 }

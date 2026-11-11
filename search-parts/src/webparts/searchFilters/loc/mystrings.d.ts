@@ -109,7 +109,10 @@ declare interface ISearchFiltersWebPartStrings {
         StylingOptionsGroupName: string;
         FilterBackgroundColorLabel: string;
         FilterBorderColorLabel: string;
+        FilterTextColorLabel: string;
+        ShowTitleLabel: string;
         FilterBorderThicknessLabel: string;
+        FilterBorderRadiusLabel: string;
         ResetToDefaultLabel: string;
         ResetToDefaultDescription: string;
     }

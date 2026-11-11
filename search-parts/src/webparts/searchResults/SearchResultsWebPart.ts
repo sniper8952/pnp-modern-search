@@ -74,6 +74,7 @@ import { MessageBar, MessageBarType } from '@fluentui/react/lib/MessageBar';
 import { Link } from '@fluentui/react/lib/Link';
 import { IComboBoxOption } from '@fluentui/react/lib/ComboBox';
 import { IToggleProps, Toggle } from '@fluentui/react/lib/Toggle';
+import { SPPermission } from '@microsoft/sp-page-context';
 
 const LogSource = "SearchResultsWebPart";
 
@@ -572,8 +573,10 @@ export default class SearchResultsWebPart extends BaseWebPart<ISearchResultsWebP
                 },
                 titleAction: this.getTitleMoreLink(),
                 resultsBackgroundColor: this.properties.resultsBackgroundColor,
+                resultsTextColor: this.properties.resultsTextColor,
                 resultsBorderColor: this.properties.resultsBorderColor,
                 resultsBorderThickness: this.properties.resultsBorderThickness,
+                resultsBorderRadius: this.properties.resultsBorderRadius,
                 titleFont: this.properties.titleFont,
                 titleFontSize: this.properties.titleFontSize,
                 titleFontColor: this.properties.titleFontColor
@@ -1505,7 +1508,8 @@ export default class SearchResultsWebPart extends BaseWebPart<ISearchResultsWebP
      */
     private initializeProperties() {
         this.properties.showTitle = this.properties.showTitle ?? true;
-        this.properties.selectedLayoutKey = this.properties.selectedLayoutKey ? this.properties.selectedLayoutKey : BuiltinLayoutsKeys.Cards;
+        this.properties.dataSourceKey = this.properties.dataSourceKey ? this.properties.dataSourceKey : BuiltinDataSourceProviderKeys.SharePointSearch;
+        this.properties.selectedLayoutKey = this.properties.selectedLayoutKey ? this.properties.selectedLayoutKey : BuiltinLayoutsKeys.People;
         this.properties.resultTypes = this.properties.resultTypes ? this.properties.resultTypes : [];
         this.properties.dataSourceProperties = this.properties.dataSourceProperties ? this.properties.dataSourceProperties : {};
 
@@ -1520,6 +1524,9 @@ export default class SearchResultsWebPart extends BaseWebPart<ISearchResultsWebP
         // Common options 
         this.properties.showSelectedFilters = this.properties.showSelectedFilters !== undefined ? this.properties.showSelectedFilters : false;
         this.properties.showResultsCount = this.properties.showResultsCount !== undefined ? this.properties.showResultsCount : true;
+        this.properties.resultsBackgroundColor = this.properties.resultsBackgroundColor !== undefined ? this.properties.resultsBackgroundColor : '#1F1F1F';
+        this.properties.resultsHoverColor = this.properties.resultsHoverColor !== undefined ? this.properties.resultsHoverColor : '#9EA500';
+        this.properties.resultsTextColor = this.properties.resultsTextColor !== undefined ? this.properties.resultsTextColor : '#FFFFFF';
         this.properties.showBlankIfNoResult = this.properties.showBlankIfNoResult !== undefined ? this.properties.showBlankIfNoResult : false;
         this.properties.useMicrosoftGraphToolkit = this.properties.useMicrosoftGraphToolkit !== undefined ? this.properties.useMicrosoftGraphToolkit : false;
         this.properties.titleLinkText = this.properties.titleLinkText ? this.properties.titleLinkText : '';
@@ -1626,16 +1633,25 @@ export default class SearchResultsWebPart extends BaseWebPart<ISearchResultsWebP
             }
         );
 
-        return builder.getStylingPageGroups();
+        const groups = builder.getStylingPageGroups();
+
+        // Site members must not see the styling options, only site owners
+        if (!this.context.pageContext.web.permissions.hasPermission(SPPermission.manageWeb)) {
+            return groups.filter(group => group.groupName !== webPartStrings.Styling.StylingOptionsGroupName);
+        }
+
+        return groups;
     }
-
-
 
     private _resetContentStylingToDefault(): void {
         // Reset all content styling properties to their default values
-        this.properties.resultsBackgroundColor = undefined;
+        this.properties.resultsTextColor = undefined;
+        this.properties.resultsBackgroundColor = '#1F1F1F';
+        this.properties.resultsHoverColor = '#9EA500';
+        this.properties.resultsTextColor = '#FFFFFF';
         this.properties.resultsBorderColor = undefined;
         this.properties.resultsBorderThickness = undefined;
+        this.properties.resultsBorderRadius = undefined;
 
         // Refresh the property pane to show the reset values
         this.context.propertyPane.refresh();

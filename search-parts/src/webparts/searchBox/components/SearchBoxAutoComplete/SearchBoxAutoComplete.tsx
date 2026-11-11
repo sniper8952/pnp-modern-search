@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from '../SearchBoxContainer.module.scss';
 import { ISearchBoxAutoCompleteState } from './ISearchBoxAutoCompleteState';
 import { ISearchBoxAutoCompleteProps } from './ISearchBoxAutoCompleteProps';
-import { Spinner, SpinnerSize, FocusZone, FocusZoneDirection, SearchBox, IconButton, Label, Icon, IconType, ISearchBox, DefaultButton, concatStyleSets, getId } from '@fluentui/react';
+import { Spinner, SpinnerSize, FocusZone, FocusZoneDirection, SearchBox, IconButton, Label, Icon, IconType, ISearchBox, DefaultButton, concatStyleSets, ISearchBoxStyles, getId } from '@fluentui/react';
 import { getSearchButtonColorStyles } from '../SearchButtonStyles';
 import { isEqual, debounce } from '@microsoft/sp-lodash-subset';
 import { ISuggestion, ISuggestionProviderContext } from '@pnp/modern-search-extensibility';
@@ -568,14 +568,18 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
 
         // Build dynamic styles
         const dynamicSearchBoxWrapperStyle: React.CSSProperties = {
-            borderColor: this.props.searchBoxBorderColor || undefined,
+            borderColor: this.props.searchBoxBorderColor || '#c2c2c2',
+            backgroundColor: this.props.searchBoxBackgroundColor || undefined,
+            borderRadius: this.props.searchBoxBorderRadius ?? 0,
             minHeight: this.props.searchBoxHeight || 32,
+            overflow: 'hidden',
             height: this.props.searchBoxHeight ? `${this.props.searchBoxHeight}px` : undefined
         };
 
         const dynamicSearchBoxTextStyle = {
             color: this.props.searchBoxTextColor || undefined,
-            height: this.props.searchBoxHeight ? `${this.props.searchBoxHeight - 2}px` : 'auto',
+            backgroundColor: this.props.searchBoxBackgroundColor || undefined,
+            height: this.props.searchBoxHeight ? `${this.props.searchBoxHeight - 2}px` : 'auto', // Account for border
             fontSize: this.props.searchBoxFontSize ? `${this.props.searchBoxFontSize}px` : undefined,
             padding: '0 8px',
             paddingInlineStart: this.props.scopeLabel ? 0 : 8
@@ -591,6 +595,24 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
             '--search-icon-size': iconFontSize,
             '--clear-icon-size': iconFontSize
         } as React.CSSProperties;
+
+        // The Fluent SearchBox applies "style" to the input only, so the outer frame and the icon need their own styles
+        const searchBoxFluentStyles: Partial<ISearchBoxStyles> = {
+            root: {
+                backgroundColor: this.props.searchBoxBackgroundColor || undefined
+            },
+            iconContainer: {
+                color: this.props.searchBoxTextColor || undefined
+            },
+            icon: {
+                color: this.props.searchBoxTextColor || undefined
+            },
+            clearButton: {
+                selectors: {
+                    '.ms-Button-icon': { color: this.props.searchBoxTextColor || undefined }
+                }
+            }
+        };
 
         return (
             <div ref={this._containerElemRef}>
@@ -609,6 +631,8 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
                             ariaLabel={`${this.props.scopeLabel ? `${this.props.scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
                             className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                             clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
+                            className={styles.searchTextField}
+                            styles={searchBoxFluentStyles}
                             value={this.state.searchInputValue}
                             autoComplete="off"
                             styles={{ root: dynamicSearchBoxTextStyle }}

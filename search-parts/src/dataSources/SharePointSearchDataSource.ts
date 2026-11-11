@@ -795,7 +795,14 @@ export class SharePointSearchDataSource extends BaseDataSource<ISharePointSearch
         return data;
     }
     private initProperties(): void {
-        this.properties.queryTemplate = this.properties.queryTemplate ? this.properties.queryTemplate : "{searchTerms}";
+        this.properties.queryTemplate = this.properties.queryTemplate ? this.properties.queryTemplate : `{searchTerms}
+        (Agri* AND JobTitle:*)
+        AND NOT PreferredName:BalmerEtienne*
+        AND NOT PreferredName: "AS Gast"
+        AND NOT PreferredName: "ASTemporary"
+        AND NOT PreferredName: "Fischer Silvan"
+        AND ("SPS-HideFromAddressLists":0 OR PreferredName:"Deubelbeiss Edgar")`;
+        
         this.properties.enableQueryRules = this.properties.enableQueryRules !== undefined ? this.properties.enableQueryRules : false;
         this.properties.enableLocalization = this.properties.enableLocalization !== undefined ? this.properties.enableLocalization : false;
         this.properties.refinementFilters = this.properties.refinementFilters ? this.properties.refinementFilters : '';
@@ -821,6 +828,8 @@ export class SharePointSearchDataSource extends BaseDataSource<ISharePointSearch
                 'UserName',
                 'JobTitle',
                 'WorkPhone',
+                'Department',
+                'RefinableString01',                 // RefinableString01 = Bürostandort (Office location), shown in the persona at size "Ultra large"
                 'SPSiteURL',
                 'SPWebUrl',
                 'SiteTitle',
@@ -829,7 +838,7 @@ export class SharePointSearchDataSource extends BaseDataSource<ISharePointSearch
                 'SiteLogo',
                 'PictureThumbnailURL'
             ];
-        this.properties.resultSourceId = this.properties.resultSourceId !== undefined ? this.properties.resultSourceId : BuiltinSourceIds.LocalSharePointResults;
+        this.properties.resultSourceId = this.properties.resultSourceId !== undefined ? this.properties.resultSourceId : BuiltinSourceIds.LocalPeopleResults;
         this.properties.hitHighlightedProperties = this.properties.hitHighlightedProperties ? this.properties.hitHighlightedProperties : '';
         this.properties.trimDuplicates = this.properties.trimDuplicates !== undefined ? this.properties.trimDuplicates : false;
 

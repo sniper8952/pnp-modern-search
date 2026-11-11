@@ -330,6 +330,18 @@ export class StylingPageGroupsBuilder {
             groupName: this.webPartStrings.Styling.StylingOptionsGroupName,
             isCollapsed: true,
             groupFields: [
+                PropertyFieldColorPicker('resultsHoverColor', {
+                    label: this.webPartStrings.Styling.ResultsHoverColorLabel,
+                    selectedColor: this.properties.resultsHoverColor,
+                    onPropertyChange: this.onPropertyPaneFieldChanged,
+                    properties: this.properties,
+                    disabled: false,
+                    debounce: 1000,
+                    isHidden: false,
+                    alphaSliderHidden: false,
+                    style: PropertyFieldColorPickerStyle.Inline,
+                    key: 'resultsHoverColorFieldId'
+                }),
                 PropertyFieldColorPicker('resultsBackgroundColor', {
                     label: this.webPartStrings.Styling.ResultsBackgroundColorLabel,
                     selectedColor: this.properties.resultsBackgroundColor,
@@ -353,6 +365,26 @@ export class StylingPageGroupsBuilder {
                     alphaSliderHidden: false,
                     style: PropertyFieldColorPickerStyle.Inline,
                     key: 'resultsBorderColorFieldId'
+                }),
+                PropertyFieldColorPicker('resultsTextColor', {
+                    label: this.webPartStrings.Styling.ResultsTextColorLabel,
+                    selectedColor: this.properties.resultsTextColor,
+                    onPropertyChange: this.onPropertyPaneFieldChanged,
+                    properties: this.properties,
+                    disabled: false,
+                    debounce: 1000,
+                    isHidden: false,
+                    alphaSliderHidden: false,
+                    style: PropertyFieldColorPickerStyle.Inline,
+                    key: 'resultsTextColorFieldId'
+                }),
+                PropertyPaneSlider('resultsBorderRadius', {
+                    label: this.webPartStrings.Styling.ResultsBorderRadiusLabel,
+                    min: 0,
+                    max: 30,
+                    step: 1,
+                    showValue: true,
+                    value: this.properties.resultsBorderRadius || 0
                 }),
                 PropertyPaneSlider('resultsBorderThickness', {
                     label: this.webPartStrings.Styling.ResultsBorderThicknessLabel,

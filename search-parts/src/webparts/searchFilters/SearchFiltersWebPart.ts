@@ -62,6 +62,7 @@ import { PeoplePickerDomainHelper } from '../../helpers/PeoplePickerDomainHelper
 import { IStaticPeopleFilterConfiguration } from './IStaticPeopleFilterConfiguration';
 import { getCommonDefaultMaxBuckets } from '../../dataSources/AvailableDataSources';
 import MaxBucketsEditor from './components/MaxBucketsEditor';
+import { SPPermission } from '@microsoft/sp-page-context';
 
 const LogSource = "SearchFiltersWebPart";
 
@@ -506,10 +507,13 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
                         },
                         filterBackgroundColor: this.properties.filterBackgroundColor,
                         filterBorderColor: this.properties.filterBorderColor,
+                        filterTextColor: this.properties.filterTextColor,
                         filterBorderThickness: this.properties.filterBorderThickness,
+                        filterBorderRadius: this.properties.filterBorderRadius,
                         titleFont: this.properties.titleFont,
                         titleFontSize: this.properties.titleFontSize,
-                        titleFontColor: this.properties.titleFontColor
+                        titleFontColor: this.properties.titleFontColor,
+                        showTitle: this.properties.showTitle
                     } as ISearchFiltersContainerProps
                 )
             );
@@ -650,7 +654,7 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
     }
 
     protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-
+        
         let propertyPanePages: IPropertyPanePage[] = [];
 
         propertyPanePages.push(
@@ -977,6 +981,26 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
                     style: this._basePropertyFieldColorPickerStyle.Inline,
                     key: 'filterBorderColorFieldId'
                 }),
+                    this._basePropertyFieldColorPicker('filterTextColor', {
+                    label: webPartStrings.Styling.FilterTextColorLabel,
+                    selectedColor: this.properties.filterTextColor,
+                    onPropertyChange: this.onPropertyPaneFieldChanged,
+                    properties: this.properties,
+                    disabled: false,
+                    debounce: 1000,
+                    isHidden: false,
+                    alphaSliderHidden: false,
+                    style: this._basePropertyFieldColorPickerStyle.Inline,
+                    key: 'filterTextColorFieldId'
+                }),
+                PropertyPaneSlider('filterBorderRadius', {
+                    label: webPartStrings.Styling.FilterBorderRadiusLabel,
+                    min: 0,
+                    max: 30,
+                    step: 1,
+                    showValue: true,
+                    value: this.properties.filterBorderRadius || 0
+                }),
                 PropertyPaneSlider('filterBorderThickness', {
                     label: webPartStrings.Styling.FilterBorderThicknessLabel,
                     min: 0,
@@ -995,8 +1019,17 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
         });
 
         // Add web part title styling and clear-all groups
+        // Add web part title styling and clear-all groups
+        const titleGroup = this.getTitleStylingPropertyPaneGroup();
+        titleGroup.groupFields = [
+            PropertyPaneToggle('showTitle', {
+                label: webPartStrings.Styling.ShowTitleLabel
+            }),
+            ...titleGroup.groupFields
+        ];
+
         groups = groups.concat([
-            this.getTitleStylingPropertyPaneGroup(),
+            titleGroup,
             {
                 groupName: webPartStrings.PropertyPane.LayoutPage.ClearAllFiltersGroupName,
                 isCollapsed: false,
@@ -1015,6 +1048,10 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
                 groupName: webPartStrings.PropertyPane.LayoutPage.LayoutTemplateOptionsGroupName,
                 groupFields: layoutOptions
             });
+        }
+             // Site members must not see the styling options, only site owners
+        if (!this.context.pageContext.web.permissions.hasPermission(SPPermission.manageWeb)) {
+            return groups.filter(group => group.groupName !== webPartStrings.Styling.StylingOptionsGroupName);
         }
 
         return groups;
@@ -1906,7 +1943,8 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
      * Initializes required Web Part properties
      */
     private initializeProperties() {
-
+        
+        this.properties.showTitle = this.properties.showTitle ?? true;
         this.properties.selectedLayoutKey = this.properties.selectedLayoutKey ? this.properties.selectedLayoutKey : BuiltinLayoutsKeys.Vertical;
         this.properties.inlineTemplateContent = this.properties.inlineTemplateContent ? this.properties.inlineTemplateContent : '';
         this.properties.filterOperator = this.properties.filterOperator ? this.properties.filterOperator : FilterConditionOperator.OR;
@@ -2240,9 +2278,12 @@ export default class SearchFiltersWebPart extends BaseWebPart<ISearchFiltersWebP
 
     private _resetContentStylingToDefault(): void {
         // Reset all content styling properties to their default values
-        this.properties.filterBackgroundColor = undefined;
+        this.properties.filterBackgroundColor = '#1f1f1f';
         this.properties.filterBorderColor = undefined;
+        this.properties.filterTextColor = '#ffffff';
         this.properties.filterBorderThickness = undefined;
+        this.properties.filterBorderRadius = undefined;
+
         // Refresh the property pane to show the reset values
         this.context.propertyPane.refresh();
 

@@ -21,6 +21,7 @@ import { IComponentFieldsConfiguration } from "../models/common/IComponentFields
 import { ServiceScope, ServiceKey, Log } from "@microsoft/sp-core-library";
 import { LivePersona } from "@pnp/spfx-controls-react/lib/LivePersona";
 import { MSGraphClientFactory } from "@microsoft/sp-http";
+import * as strings from "CommonStrings";
 
 const LogSource = "PersonaComponent";
 
@@ -170,7 +171,14 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
             }, 100);
         }
     }
-
+    private getPersonaSizeProps(): { size: number; coinSize?: number } {
+        const key = parseInt(this.props.personaSize ?? '48');
+        if (key === 20) {
+            // Ultra large: 200px (Fluent only has presets up to 120px)
+            return { size: 18, coinSize: 200 };
+        }
+        return { size: key };
+    }
     public render(): React.ReactNode {
         // Resolve fields via fieldsConfiguration when provided to populate persona texts/image
         let processedProps: IPersonaComponentProps = this.props;
@@ -228,8 +236,12 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
             },
             onRenderOptionalText: () => {
                 if (this.props.imageOnly) return null;
-                return <div style={{ display: 'inline', whiteSpace: 'normal' }} dangerouslySetInnerHTML={{ __html: this.props.templateService.sanitizeHtmlWithStylePreservation((this.props.templateService as any).applyDisambiguatedMgtPrefixIfNeeded(optionalText)) }} />;
+                return <>
+                    <div style={{ display: 'inline', whiteSpace: 'normal' }} dangerouslySetInnerHTML={{ __html: this.props.templateService.sanitizeHtmlWithStylePreservation((this.props.templateService as any).applyDisambiguatedMgtPrefixIfNeeded(optionalText)) }} />
+                    {this.renderUltraInfo(processedProps)}
+                </>;                
             }
+            
         };
 
         if (this.state.PresenceInfo) {
@@ -241,7 +253,7 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
         if (this.props.nativeLpc) {
             if (this.props.showHoverOnPictureOnly) {
                 // Picture-only mode: split layout with hover on image only
-                const sizeNum = parseInt(this.props.personaSize ?? '48') || 48;
+                const sizeNum = parseInt(this.props.personaSize ?? '48') === 20 ? 200 : (parseInt(this.props.personaSize ?? '48') || 48);
                 const actualHeight = this.state.imageHeight || sizeNum;
                 const wrapperWidth = Math.round(actualHeight * 1.0);
 
@@ -274,11 +286,11 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
                 return (
                     <div ref={this.componentRef} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div ref={this.imageWrapperRef} className="live-persona-card-wrapper" style={{ width: wrapperWidth, maxWidth: wrapperWidth, minWidth: wrapperWidth, cursor: 'pointer' }}>
-                            <LivePersona upn={upnResolved} template={<Persona {...coinOnly} size={parseInt(this.props.personaSize ?? '48')} />} serviceScope={this.props.serviceScope as any} />
+                            <LivePersona upn={upnResolved} template={<Persona {...coinOnly} {...this.getPersonaSizeProps()} />} serviceScope={this.props.serviceScope as any} />
                         </div>
                         <div className="text-only-persona" style={{ display: 'inline-block' }}>
                             <style dangerouslySetInnerHTML={{ __html: `.text-only-persona .ms-Persona-coin, .text-only-persona .ms-Persona-imageArea, .text-only-persona .ms-Persona-initials, .text-only-persona [class*="coin-"], .text-only-persona [class*="imageArea-"], .text-only-persona [class*="initials-"], .text-only-persona [data-automationid="PersonaCoin"] { display: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; visibility: hidden !important; }` }} />
-                            <Persona {...textOnly} size={parseInt(this.props.personaSize ?? '48')} />
+                            <Persona {...textOnly} {...this.getPersonaSizeProps()} />
                         </div>
                     </div>
                 );
@@ -287,7 +299,7 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
             // Native LPC without picture-only: full persona with hover on entire component
             return (
                 <div ref={this.componentRef}>
-                    <LivePersona upn={upnResolved} template={<Persona {...persona} size={parseInt(this.props.personaSize ?? '48')} />} serviceScope={this.props.serviceScope as any} />
+                    <LivePersona upn={upnResolved} template={<Persona {...persona} {...this.getPersonaSizeProps()} />} serviceScope={this.props.serviceScope as any} />
                 </div>
             );
         }
@@ -325,18 +337,39 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
                                 ` display: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; visibility: hidden !important; }`
                         }}
                     />
-                    <Persona {...textOnly} size={parseInt(this.props.personaSize ?? '48')} />
+                    <Persona {...persona} {...this.getPersonaSizeProps()} />
                 </div>
             );
         }
 
         return (
             <div ref={this.componentRef} style={{ display: 'inline-block' }}>
-                <Persona {...persona} size={parseInt(this.props.personaSize ?? '48')} />
+                <Persona {...persona} {...this.getPersonaSizeProps()} />
             </div>
         );
     }
 
+    private renderUltraInfo(processedProps: any): React.ReactNode {
+        // Only for "Ultra large" (key 20)
+        if (parseInt(this.props.personaSize ?? '48') !== 20) return null;
+
+        const layoutProps = (this.props.context as any)?.properties?.layoutProperties;
+        const showDepartment = layoutProps?.showDepartment !== false;
+        const showOfficeLocation = layoutProps?.showOfficeLocation !== false;
+        const department: string = processedProps?.department;
+        const officeLocation: string = processedProps?.officeLocation;
+
+        return (
+            <>
+                {showDepartment && department && (
+                    <div style={{ fontWeight: 600, fontSize: 16, marginTop: 16 }}>{strings.Layouts.People.DepartmentLabel}: {department}</div>
+                )}
+                {showOfficeLocation && officeLocation && (
+                    <div style={{ fontSize: 14 }}>{strings.Layouts.People.OfficeLocationLabel}: {officeLocation}</div>
+                )}
+            </>
+        );
+    }
     /**
      * Performs a MS Graph-call to retrieve presence-information of an Entra ID-user
      * @param entraIdUserObjectId Entra ID ObjectId of the user
