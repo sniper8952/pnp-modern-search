@@ -213,7 +213,6 @@ export default class SearchBoxContainer extends React.Component<ISearchBoxContai
                     componentRef={searchBoxRef}
                     placeholder={this.props.placeholderText ? this.props.placeholderText : webPartStrings.SearchBox.DefaultPlaceholder}
                     ariaLabel={`${scopeLabel ? `${scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
-                    className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                     clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                     className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                     clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
