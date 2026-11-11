@@ -629,7 +629,6 @@ export default class SearchBoxAutoComplete extends React.Component<ISearchBoxAut
                             componentRef={searchBoxRef}
                             placeholder={this.props.placeholderText ? this.props.placeholderText : webPartStrings.SearchBox.DefaultPlaceholder}
                             ariaLabel={`${this.props.scopeLabel ? `${this.props.scopeLabel}: ` : ''}${this.props.placeholderText || webPartStrings.SearchBox.DefaultPlaceholder}`}
-                            className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                             clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
                             className={`${styles.searchTextField} ${this.state.searchInputValue ? styles.hasSearchText : ''}`}
                             clearButtonProps={{ iconProps: { iconName: 'Back' }, ariaLabel: webPartStrings.SearchBox.ClearButtonLabel }}
