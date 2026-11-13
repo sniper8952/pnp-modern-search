@@ -341,6 +341,7 @@ define([], function () {
                 PersonaSizeRegular: "Regulär",
                 PersonaSizeLarge: "Groß",
                 PersonaSizeExtraLarge: "Extra groß",
+                PersonaSizeUltraLarge: "Ultra groß",
                 ShowInitialsToggleLabel: "Initialen anzeigen, wenn kein Bild vorhanden",
                 SupportHTMLColumnLabel: "HTML erlauben",
                 ResetFieldsBtnLabel: "Felder auf Standardwerte zurücksetzen",
@@ -348,9 +349,16 @@ define([], function () {
                 ShowPersonaCardOnHoverCalloutMsg: "Diese Funktion verwendet Microsoft Graph, um Informationen über den Benutzer anzuzeigen. Sie benötigt die folgenden API-Berechtigungen in Ihrem Mandanten, um zu funktionieren: ['User.Read','People.Read','Contacts.Read','User.Read.All'].",
                 ShowPersonaCardOnHoverNative: "Persona-Karte bei Hover anzeigen (LPC)",
                 ShowPersonaCardOnHoverCalloutMsgNative: "Diese Funktion verwendet die Standard-Komponente von SharePoint, um die LivePersona-Karte anzuzeigen. Beachten Sie den Disclaimer unter https://pnp.github.io/sp-dev-fx-controls-react/controls/LivePersona/.",
+                ShowHoverSelection: "Hover Auswahl anzeigen",
+                ShowHoverSelectionCalloutMsg: "Färbt die Zeile einer Person beim Darüberfahren ein. Die Farbe stellst du unter Stiloptionen ein (Hover Auswahl Farbe).",
                 ShowPersonaPresenceInfo: "Präsenz anzeigen",
                 ShowPersonaPresenceInfoCalloutMsg: "Diese Funktion benötigt die folgende API-Berechtigungen in Ihrem Mandanten, um zu funktionieren: ['Presence.Read.All']",
                 ShowHoverOnPictureOnly: "Hover nur auf Bild anzeigen",
+                ShowDepartment: "Abteilung anzeigen (nur Ultra groß)",
+                ShowOfficeLocation: "Bürostandort anzeigen (nur Ultra groß)",
+                UltraInfoCalloutMsg: "Gilt nur für die Größe 'Ultra groß'. Die Werte stammen aus den Feldern 'Abteilung' und 'Bürostandort' in der Feldkonfiguration.",
+                DepartmentLabel: "Abteilung",
+                OfficeLocationLabel: "Bürostandort",
                 ShowHoverOnPictureOnlyCalloutMsg: "Wenn aktiviert, öffnet sich die Personenkarte nur beim Hovern über das Persona-Bild (Coin).",
                 Fields: {
                     ImageUrl: "Bild URL",
@@ -358,7 +366,9 @@ define([], function () {
                     SecondaryText: "Sekundärer Text",
                     TertiaryText: "Tertiärer Text",
                     OptionalText: "Optionaler Text",
-                    UPN: "UPN"
+                    UPN: "UPN",
+                    Department: "Abteilung",
+                    OfficeLocation: "Bürostandort"
                 }
             },
             Vertical: {

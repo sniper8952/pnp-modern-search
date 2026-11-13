@@ -26,8 +26,10 @@ declare interface ISearchBoxWebPartStrings {
             ButtonColorLabel: string;
             ButtonTextColorLabel: string;
             PlaceholderTextColorLabel: string;
-            BackgroundColorLabel: string;
             TextColorLabel: string;
+            BackgroundColorLabel: string;
+            BorderRadiusLabel: string;
+            ShowTitleLabel: string;            
             ShowSearchButtonWhenEmptyLabel: string;
             ShowSearchButtonWhenEmptyDescription: string;
             SearchButtonDisplayModeLabel: string;

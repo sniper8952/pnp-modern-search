@@ -1765,7 +1765,7 @@ export default class SearchFiltersContainer extends React.Component<ISearchFilte
 
         let renderWpContent: JSX.Element = null;
         let templateContent: string = null;
-        const renderTitle = <StyledWebPartTitle
+        const renderTitle = this.props.showTitle === false ? null : <StyledWebPartTitle
             instanceId={this.props.instanceId}
             titleFont={this.props.titleFont}
             titleFontSize={this.props.titleFontSize}
@@ -1800,12 +1800,38 @@ export default class SearchFiltersContainer extends React.Component<ISearchFilte
         const containerStyles: React.CSSProperties = {
             position: 'relative',
             backgroundColor: this.props.filterBackgroundColor || undefined,
+            color: this.props.filterTextColor || undefined,
             borderStyle: this.props.filterBorderColor || this.props.filterBorderThickness ? 'solid' : undefined,
             borderColor: this.props.filterBorderColor || undefined,
-            borderWidth: this.props.filterBorderThickness === undefined ? undefined : `${this.props.filterBorderThickness}px`
+            borderWidth: this.props.filterBorderThickness === undefined ? undefined : `${this.props.filterBorderThickness}px`,
+            borderRadius: this.props.filterBorderRadius === undefined ? undefined : `${this.props.filterBorderRadius}px`
         };
+        // Fluent UI controls set their own text colors, so inheritance is not enough
+        const safeTextColor = /^(#[0-9a-fA-F]{3,8}|rgba?\([\d\s,.]+\))$/.test(this.props.filterTextColor || '')
+            ? this.props.filterTextColor : '';
 
+        const textColorStyle = safeTextColor ? (
+            <style>{`
+                [data-instance-id="${this.props.instanceId}"],
+                [data-instance-id="${this.props.instanceId}"] *:not(input):not(textarea):not(select) {
+                    color: ${safeTextColor} !important;
+                }
+                /* The light "Reset" button must keep dark text */
+                [data-instance-id="${this.props.instanceId}"] [class*="clearBtn"],
+                [data-instance-id="${this.props.instanceId}"] [class*="clearBtn"] * {
+                    color: #000000 !important;
+                }
+                /* "Apply" button: dark text while it is disabled (nothing selected) */
+                [data-instance-id="${this.props.instanceId}"] [class*="applyBtn"].is-disabled,
+                [data-instance-id="${this.props.instanceId}"] [class*="applyBtn"].is-disabled *,
+                [data-instance-id="${this.props.instanceId}"] [class*="applyBtn"][disabled],
+                [data-instance-id="${this.props.instanceId}"] [class*="applyBtn"][disabled] * {
+                    color: #000000 !important;
+                }
+            `}</style>
+        ) : null;
         return <div ref={this.componentRef} data-instance-id={this.props.instanceId} style={containerStyles} onPointerDownCapture={this.primeBusyCursorFromInteraction}>
+            {textColorStyle}
             {renderTitle}
             {renderWpContent}
         </div>;

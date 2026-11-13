@@ -107,6 +107,10 @@ export interface ISearchResultsContainerProps {
    */
   resultsBackgroundColor?: string;
 
+    /**
+   * Results panel Text Farbe
+   */
+  resultsTextColor?: string;
   /**
    * Results panel border color
    */
@@ -116,6 +120,11 @@ export interface ISearchResultsContainerProps {
    * Results panel border thickness in pixels
    */
   resultsBorderThickness?: number;
+  
+  /**
+   * Results panel border radius in pixels
+   */
+  resultsBorderRadius?: number;
 
   /**
    * Title font family

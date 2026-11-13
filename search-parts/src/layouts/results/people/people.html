@@ -21,6 +21,17 @@
             width: auto !important;
             height: auto !important;
         }
+        /* Hover on a person: dark green background */
+        .template--peopleListItem {
+            transition: background-color 0.2s ease;
+             border-radius: 10px;
+        }
+
+        {{#eq @root.properties.layoutProperties.showHoverSelection false}}{{else}}
+        .template--peopleListItem:hover {
+            background: {{#if @root.properties.resultsHoverColor}}{{@root.properties.resultsHoverColor}}{{else}}#9EA500{{/if}};
+        }
+        {{/eq}}
 
     </style>
 

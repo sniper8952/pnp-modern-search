@@ -35,6 +35,7 @@ import { LocalizationHelper } from "@microsoft/mgt-element/dist/es6/utils/Locali
 import { ITextFieldProps, TextField } from '@fluentui/react/lib/TextField';
 import { Dropdown, IDropdownProps } from '@fluentui/react/lib/Dropdown';
 import { Checkbox } from '@fluentui/react/lib/Checkbox';
+import { SPPermission } from '@microsoft/sp-page-context';
 
 const PeoplePicker = React.lazy(() =>
     import(/* webpackChunkName: 'pnp-modern-search-microsoft-graph-toolkit' */ '@microsoft/mgt-react/dist/es6/generated/people-picker')
@@ -310,6 +311,18 @@ export default class DataVerticalsWebPart extends BaseWebPart<ISearchVerticalsWe
 
     protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 
+        // Only site owners (permission "Manage web") may edit the settings
+        if (!this.context.pageContext.web.permissions.hasPermission(SPPermission.manageWeb)) {
+            return {
+                pages: [
+                    {
+                        header: { description: 'Die Einstellungen können nur von Websitebesitzern geändert werden.' },
+                        groups: []
+                    }
+                ]
+            };
+        }
+        
         let propertyPanePages: IPropertyPanePage[] = [];
 
         propertyPanePages.push(

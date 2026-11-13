@@ -216,6 +216,16 @@ export default interface ISearchResultsWebPartProps extends IBaseWebPartProps {
     resultsBackgroundColor?: string;
 
     /**
+     * Hover selection color of a result row
+     */
+    resultsHoverColor?: string;
+    
+    /**
+   * Results Text Color
+   */
+    resultsTextColor?: string;
+    
+    /**
    * Results panel border color
    */
   resultsBorderColor?: string;
@@ -224,5 +234,10 @@ export default interface ISearchResultsWebPartProps extends IBaseWebPartProps {
    * Results panel border thickness in pixels
    */
   resultsBorderThickness?: number;
+
+  /**
+   * Results panel border radius in pixels
+   */
+  resultsBorderRadius?: number;
 }
 

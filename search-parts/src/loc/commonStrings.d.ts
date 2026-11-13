@@ -341,6 +341,7 @@ declare interface ICommonStrings {
         PersonaSizeRegular: string;
         PersonaSizeLarge: string;
         PersonaSizeExtraLarge: string;
+	  	PersonaSizeUltraLarge: string;
         ShowInitialsToggleLabel: string;
         SupportHTMLColumnLabel: string;
         ResetFieldsBtnLabel: string;
@@ -348,9 +349,16 @@ declare interface ICommonStrings {
         ShowPersonaCardOnHoverNative: string;
         ShowPersonaCardOnHoverCalloutMsg: string;
         ShowPersonaCardOnHoverCalloutMsgNative: string;
+		ShowHoverSelection: string;
+        ShowHoverSelectionCalloutMsg: string;  
         ShowPersonaPresenceInfo: string;
         ShowPersonaPresenceInfoCalloutMsg: string;
         ShowHoverOnPictureOnly: string;
+	    ShowDepartment: string;
+        ShowOfficeLocation: string;
+        UltraInfoCalloutMsg: string;
+        DepartmentLabel: string;
+        OfficeLocationLabel: string;
         ShowHoverOnPictureOnlyCalloutMsg: string;
         Fields: {
           ImageUrl: string;
@@ -359,6 +367,8 @@ declare interface ICommonStrings {
           TertiaryText: string;
           OptionalText: string;
           UPN: string;
+		  Department: string;
+          OfficeLocation: string;
         }
       };
       Vertical: {

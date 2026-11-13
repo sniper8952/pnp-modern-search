@@ -63,6 +63,8 @@ define([], function () {
                 CustomizeFiltersDescription: "Filter durch Hinzufügen/Entfernen von Zeilen konfigurieren. Für die Filter können Felder von den Datenquellen-Ergebnissen oder statische Werte selektiert werden. Für weitere Informationen sehen Sie https://microsoft-search.github.io/pnp-modern-search/usage/search-filters/#filter-settings",
                 CustomizeFiltersFieldLabel: "Filter anpassen",
                 ShowCount: "Zeige Anzahl",
+                TermSetId: "Termset-ID",
+                TermGroupId: "Termgruppen-ID",
                 Operator: "Operator zwichen Werten",
                 ANDOperator: "AND",
                 OROperator: "OR",
@@ -107,8 +109,11 @@ define([], function () {
         Styling: {
             StylingOptionsGroupName: "Stiloptionen",
             FilterBackgroundColorLabel: "Filter-Hintergrundfarbe",
+            FilterTextColorLabel: "Filter-Schriftfarbe",
             FilterBorderColorLabel: "Filter-Rahmenfarbe",
             FilterBorderThicknessLabel: "Filter-Rahmenstärke",
+            FilterBorderRadiusLabel: "Filter-Kantenradius",
+            ShowTitleLabel: "Titel anzeigen",
             ResetToDefaultLabel: "Styling auf Standard zurücksetzen",
             ResetToDefaultDescription: "Alle Styling-Optionen auf ihre Standardwerte zurücksetzen"
         }

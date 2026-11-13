@@ -342,6 +342,7 @@ define([], function () {
                 PersonaSizeRegular: "Regular",
                 PersonaSizeLarge: "Large",
                 PersonaSizeExtraLarge: "Extra large",
+                PersonaSizeUltraLarge: "Ultra large",
                 ShowInitialsToggleLabel: "Show initials if no picture available",
                 SupportHTMLColumnLabel: "Allow HTML",
                 ResetFieldsBtnLabel: "Reset fields to default values",
@@ -349,9 +350,16 @@ define([], function () {
                 ShowPersonaCardOnHoverCalloutMsg: "This feature uses Microsoft Graph to display information about the user and needs the following API permissions in your tenant to work: ['User.Read','People.Read','Contacts.Read','User.Read.All'].",
                 ShowPersonaCardOnHoverNative: "Show persona card on hover (LPC)",
                 ShowPersonaCardOnHoverCalloutMsgNative: "This feature uses the native SharePoint implementation to show the live persona card (LPC). See https://pnp.github.io/sp-dev-fx-controls-react/controls/LivePersona/ for considerations.",
+                ShowHoverSelection: "Show hover selection",
+                ShowHoverSelectionCalloutMsg: "Highlights a person's row when hovering over it. The color is set under Style options (Hover selection color).",
                 ShowPersonaPresenceInfo: "Show presence",
                 ShowPersonaPresenceInfoCalloutMsg: "This feature needs the following API permissions in your tenant to work: ['Presence.Read.All']",
                 ShowHoverOnPictureOnly: "Show hover on picture only",
+                ShowDepartment: "Show department (Ultra large only)",
+                ShowOfficeLocation: "Show office location (Ultra large only)",
+                UltraInfoCalloutMsg: "Only applies to size 'Ultra large'. Values come from the fields 'Department' and 'Office location' in the field configuration.",
+                DepartmentLabel: "Department",
+                OfficeLocationLabel: "Office location",
                 ShowHoverOnPictureOnlyCalloutMsg: "When enabled, the person card opens only when hovering the persona image (coin).",
                 Fields: {
                     ImageUrl: "Image URL",
@@ -359,7 +367,9 @@ define([], function () {
                     SecondaryText: "Secondary text",
                     TertiaryText: "Tertiary text",
                     OptionalText: "Optional text",
-                    UPN: "UPN"
+                    UPN: "UPN",
+                    Department: "Department",
+                    OfficeLocation: "Office location"
                 }
             },
             Vertical: {
