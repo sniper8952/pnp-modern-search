@@ -186,21 +186,10 @@ export default class SearchBoxContainer extends React.Component<ISearchBoxContai
             '--clear-icon-size': iconFontSize
         } as React.CSSProperties;
 
-        // The Fluent SearchBox applies "style" to the input only, so the outer frame and the icon need their own styles
+        // Typed text color is set on the Fluent "field" slot (the <input>); background and icon colors come from CSS variables
         const searchBoxFluentStyles: Partial<ISearchBoxStyles> = {
-            root: {
-                backgroundColor: this.props.searchBoxBackgroundColor || undefined
-            },
-            iconContainer: {
+            field: {
                 color: this.props.searchBoxTextColor || undefined
-            },
-            icon: {
-                color: this.props.searchBoxTextColor || undefined
-            },
-            clearButton: {
-                selectors: {
-                    '.ms-Button-icon': { color: this.props.searchBoxTextColor || undefined }
-                }
             }
         };
 
@@ -376,11 +365,11 @@ export default class SearchBoxContainer extends React.Component<ISearchBoxContai
             '--search-border': this.props.searchBoxBorderColor || colors.inputBorder,
             '--search-border-hover': this.props.searchBoxBorderColor || colors.inputBorderHovered,
             '--search-focus': this.props.searchBoxBorderColor || colors.inputFocusBorderAlt,
-            '--search-background': colors.inputBackground,
+            '--search-background': this.props.searchBoxBackgroundColor || colors.inputBackground,
             '--search-text': this.props.searchBoxTextColor || colors.inputText,
             '--search-font-size': `${this.props.searchBoxFontSize || 14}px`,
             '--placeholder-color': this.props.placeholderTextColor || colors.inputPlaceholderText,
-            '--search-icon-color': this.props.searchBoxTextColor || colors.inputIcon, //alter Wert: colors.inputIcon,
+            '--search-icon-color': colors.inputIcon,
             '--search-button-background': this.props.searchButtonColor || colors.primaryButtonBackground,
             '--search-button-hover': this.props.searchButtonColor || colors.primaryButtonBackgroundHovered,
             '--search-button-text': colors.primaryButtonText,
